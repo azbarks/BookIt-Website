@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — BookIt</title>
+<meta name="description" content="BookIt collects no personal data. Your reading log stays on your device and in your own iCloud account. The optional barcode scan sends only the book's ISBN to a public book database.">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<style>
+.policy-hero {
+  padding: 60px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 52px;
+  max-width: 700px;
+}
+.policy-hero h1 { font-size: clamp(1.9rem, 3.5vw, 2.6rem); margin-top: .3em; }
+.policy-hero p  { font-size: 1rem; color: var(--ink-muted); margin-top: .7em; }
+
+.policy-body { max-width: 700px; }
+.policy-body h2 {
+  font-size: 1.3rem;
+  margin: 40px 0 10px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.policy-body h2:first-child { border-top: none; margin-top: 0; }
+.policy-body p, .policy-body li {
+  font-size: .97rem;
+  color: var(--ink-muted);
+  line-height: 1.7;
+  max-width: 62ch;
+}
+.policy-body ul {
+  margin: 10px 0 10px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.highlight-box {
+  background: var(--ember-pale);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 40px;
+}
+.highlight-box p {
+  font-size: 1.05rem;
+  color: var(--ember);
+  font-weight: 600;
+  max-width: none;
+}
+.highlight-box span { font-weight: 400; color: var(--ink-muted); display: block; margin-top: 6px; font-size: .95rem; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav" aria-label="Site navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="images/icon.png" alt="" class="nav-logo-icon">
+      BookIt
+    </a>
+    <ul class="nav-links">
+      <li><a href="help.html">Help</a></li>
+      <li><a href="privacy.html" aria-current="page">Privacy</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="index.html#download" class="nav-cta">Download</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+<div class="page-content">
+
+  <div class="policy-hero">
+    <p class="eyebrow">Legal</p>
+    <h1>Privacy Policy</h1>
+    <p>Effective date: October 4, 2026 &nbsp;·&nbsp; App version 1.0</p>
+  </div>
+
+  <div class="policy-body">
+
+    <div class="highlight-box">
+      <p>BookIt collects no personal data and sends none to us.</p>
+      <span>Your reading log stays on your device and in your own iCloud account. We have no servers, no analytics, and no way to access your information. The one exception is optional: <strong>Scan Barcode</strong> sends the book's ISBN number to a public book database so it can fill in the title and author.</span>
+    </div>
+
+    <h2>What data does the app store?</h2>
+    <p>BookIt stores only what you enter:</p>
+    <ul>
+      <li>Your books — title, author, format, reading status, ownership, source, and whether it's archived</li>
+      <li>Start and finish dates, star ratings, and your past reads of a book</li>
+      <li>Who recommended a book, your notes, and why you set a book aside</li>
+    </ul>
+    <p>This data is stored in two places only: locally on your device using Apple's SwiftData framework, and in your personal iCloud account if iCloud is enabled. Neither location is accessible to us.</p>
+
+    <h2>Scan Barcode</h2>
+    <p>The barcode lookup only happens when you tap <strong>Scan Barcode</strong> while adding a book. When you do:</p>
+    <ul>
+      <li>The camera reads the book's ISBN — the number under the barcode.</li>
+      <li>That number is sent to <a href="https://openlibrary.org/" target="_blank" rel="noopener">Open Library</a>, a free public book database. If it doesn't know the book, the number is sent to <a href="https://books.google.com/" target="_blank" rel="noopener">Google Books</a> instead.</li>
+      <li>Only the ISBN is sent — no account, name, device ID, location, or anything about your library. The service returns the title and author.</li>
+    </ul>
+    <p>You never have to use it: you can type the title in yourself, and BookIt makes no network requests at all.</p>
+
+    <h2>Camera and Scan Cover</h2>
+    <p>Both scan buttons use the camera, and iOS asks your permission the first time. <strong>Scan Cover</strong> reads the text on a book's front cover using Apple's on-device text recognition — the picture and its text never leave your phone, and the picture isn't saved. You can turn camera access off any time in <strong>Settings → BookIt → Camera</strong>.</p>
+
+    <h2>Does the app collect analytics or crash reports?</h2>
+    <p>No. BookIt contains no analytics SDK, no crash reporting service, and no telemetry of any kind. We receive no data about how you use the app.</p>
+
+    <h2>Does the app use advertising or tracking?</h2>
+    <p>No. There are no ads, no tracking, and no third-party SDKs. Apart from the optional barcode lookup above, the app makes no network requests to any server we operate or any third-party service.</p>
+
+    <h2>iCloud sync</h2>
+    <p>If you have iCloud enabled on your device, your data syncs to Apple's iCloud servers under your own Apple ID. This sync is governed by <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple's Privacy Policy</a>. We have no access to your iCloud data.</p>
+
+    <h2>Backups and spreadsheets</h2>
+    <p><strong>Export Backup</strong> and <strong>Export Reading List</strong> create a file with your books and hand it to the iOS share sheet. Where it goes — Files, Dropbox, an email to yourself — is entirely up to you. BookIt never uploads it anywhere on its own. Importing reads only the file you pick.</p>
+
+    <h2>Notifications</h2>
+    <p>BookIt does not send notifications and requests no notification permission.</p>
+
+    <h2>Children's privacy</h2>
+    <p>BookIt does not knowingly collect information from children under 13. The app contains no features directed at children.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If we make material changes to this policy, we will update the effective date above and note the change in the app's release notes.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy? <a href="support.html">Contact us</a> and we'll respond promptly.</p>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© 2026 BookIt · Built by Bruce Barclay</span>
+    <ul class="footer-links">
+      <li><a href="help.html">Help</a></li>
+      <li><a href="privacy.html">Privacy Policy</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

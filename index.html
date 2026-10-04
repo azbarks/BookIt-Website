@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BookIt</title>
+<meta name="description" content="A personal reading log. Keep track of the books you've read, are reading, listened to, or want to get to — with dates, star ratings, re-reads, and who recommended each one.">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── Hero ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 60px;
+  align-items: center;
+  padding: 80px 0 72px;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--ember-pale);
+  color: var(--ember);
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: 22px;
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 22px;
+  color: var(--ink);
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--ember);
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--ink-muted);
+  max-width: 46ch;
+  margin-bottom: 36px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-soon {
+  background: var(--ember-pale);
+  color: var(--ember);
+  border: 1.5px solid var(--ember);
+  cursor: default;
+}
+.btn-soon:hover { transform: none; box-shadow: none; }
+
+.hero-phone {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.phone-frame {
+  width: 240px;
+  background: var(--nav-bg);
+  border-radius: 38px;
+  border: 6px solid rgba(255,255,255,.12);
+  box-shadow: 0 30px 80px rgba(15,42,94,.32), 0 0 0 1px rgba(255,255,255,.04);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-notch {
+  width: 80px;
+  height: 26px;
+  background: var(--nav-bg);
+  border-radius: 0 0 16px 16px;
+  align-self: center;
+  margin-top: -1px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* The mock screen is always light, like the app in light mode. */
+.phone-screen {
+  flex: 1;
+  background: #F2F2F7;
+  padding: 14px 12px 18px;
+  overflow: hidden;
+}
+
+.mock-title {
+  font-family: system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 10px;
+}
+
+.mock-list {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  overflow: hidden;
+}
+
+.mock-row {
+  display: flex;
+  gap: 9px;
+  padding: 9px 10px;
+  border-bottom: 1px solid #ECECEF;
+  align-items: center;
+}
+.mock-row:last-child { border-bottom: none; }
+
+.mock-thumb {
+  width: 34px; height: 34px;
+  border-radius: 7px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+}
+.thumb-a { background: linear-gradient(135deg, #7A3A1A, #C4672A); }
+.thumb-b { background: linear-gradient(135deg, #B07A2A, #E8B860); }
+.thumb-c { background: linear-gradient(135deg, #4A2412, #8E4A22); }
+
+.mock-body { flex: 1; min-width: 0; }
+.mock-top {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.mock-meat {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #111;
+  white-space: nowrap;
+}
+.mock-pill {
+  font-size: 8.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+.pill-reading  { background: #FDEBD9; color: #E07B1F; }
+.pill-finished { background: #DDF2E3; color: #2E9E4F; }
+.pill-shelf    { background: #EFE3F8; color: #9B59D0; }
+.mock-stars {
+  font-size: 9px;
+  color: #F5B400;
+  letter-spacing: -.5px;
+  white-space: nowrap;
+}
+.mock-tag {
+  font-size: 9px;
+  font-weight: 700;
+  color: #8A5A2B;
+  white-space: nowrap;
+}
+.mock-icon {
+  width: 22px;
+  flex-shrink: 0;
+  font-size: 15px;
+  text-align: center;
+  align-self: flex-start;
+  padding-top: 1px;
+}
+.mock-seg {
+  display: flex;
+  background: #E3E3E8;
+  border-radius: 7px;
+  padding: 2px;
+  margin-bottom: 8px;
+}
+.mock-seg span {
+  flex: 1;
+  text-align: center;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #333;
+  padding: 3px 0;
+  border-radius: 5px;
+}
+.mock-seg .on { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.mock-sub {
+  font-size: 10.5px;
+  color: #8A8A90;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mock-meta {
+  font-size: 9.5px;
+  color: #8A8A90;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Trust bar ── */
+.trust-bar {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 0;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .9rem;
+  color: var(--ink-muted);
+  font-weight: 500;
+}
+.trust-icon { font-size: 1.2rem; }
+
+/* ── Features ── */
+.features { padding: 80px 0 0; }
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+.feature-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+}
+.icon-ember { background: var(--ember-pale); }
+.icon-flame { background: var(--flame-light); }
+
+.feature-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+.feature-card p {
+  font-size: .92rem;
+  color: var(--ink-muted);
+  line-height: 1.55;
+}
+
+/* ── How it works ── */
+.how {
+  padding: 80px 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.how-steps { display: flex; flex-direction: column; gap: 28px; }
+.step {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+.step-num {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--ember);
+  color: white;
+  font-weight: 700;
+  font-size: .9rem;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.step-body h4 { font-size: 1rem; margin-bottom: 4px; }
+.step-body p  { font-size: .9rem; color: var(--ink-muted); max-width: 38ch; }
+
+.how-visual {
+  background: var(--char-deep);
+  border-radius: 16px;
+  height: 340px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.how-visual img {
+  width: 220px;
+  height: 220px;
+  border-radius: 48px;
+  box-shadow: 0 20px 60px rgba(15,42,94,.30);
+}
+
+/* ── iCloud band ── */
+.icloud-band {
+  margin-top: 80px;
+  background: var(--char-deep);
+  border-radius: 16px;
+  padding: 48px 52px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.icloud-band h2 {
+  color: white;
+  font-size: 1.7rem;
+  margin-bottom: 10px;
+}
+.icloud-band p {
+  color: #C3CCE0;
+  font-size: .95rem;
+}
+.icloud-band .btn-primary { white-space: nowrap; }
+
+/* ── Responsive ── */
+@media (max-width: 760px) {
+  .hero { grid-template-columns: 1fr; padding-top: 56px; }
+  .hero-phone { display: none; }
+  .how { grid-template-columns: 1fr; }
+  .how-visual { display: none; }
+  .icloud-band { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav" aria-label="Site navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="images/icon.png" alt="" class="nav-logo-icon">
+      BookIt
+    </a>
+    <ul class="nav-links">
+      <li><a href="help.html">Help</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="#download" class="nav-cta">Download</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+<div class="page-content">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="hero-tag">
+        <span>📱</span> Coming soon to the App Store
+      </div>
+      <h1>Every book you've read, <em>and the ones you're getting to</em></h1>
+      <p class="hero-sub">BookIt is a quiet place to keep your reading. Log what you've read and listened to, what you're reading now, and what's next — with dates, a star rating, and who recommended it.</p>
+      <div class="hero-actions" id="download">
+        <!-- TODO at release: swap for the real App Store link, like PrayIt's
+             <a href="https://apps.apple.com/us/app/bookit/id…" class="btn btn-primary" target="_blank" rel="noopener">⬇ Download on the App Store</a> -->
+        <span class="btn btn-soon" aria-label="BookIt is coming soon to the App Store">📚 Coming soon to the App Store</span>
+        <a href="help.html" class="btn btn-ghost">See how it works</a>
+      </div>
+    </div>
+
+    <div class="hero-phone" aria-hidden="true">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="mock-title">Library</div>
+          <div class="mock-seg"><span class="on">All</span><span>Reading</span><span>Finished</span><span>Shelf</span></div>
+          <div class="mock-list">
+            <div class="mock-row">
+              <div class="mock-icon">🎧</div>
+              <div class="mock-body">
+                <div class="mock-meat">The Hiding Place</div>
+                <div class="mock-sub">Corrie ten Boom</div>
+                <div class="mock-top"><span class="mock-pill pill-reading">Reading</span></div>
+                <div class="mock-meta">Started Sep 28</div>
+              </div>
+            </div>
+            <div class="mock-row">
+              <div class="mock-icon">📖</div>
+              <div class="mock-body">
+                <div class="mock-meat">East of Eden</div>
+                <div class="mock-sub">John Steinbeck</div>
+                <div class="mock-top"><span class="mock-pill pill-finished">Finished</span><span class="mock-stars">★★★★★</span><span class="mock-tag">↻ ×2</span></div>
+                <div class="mock-meta">Finished Sep 20 · 3 weeks</div>
+              </div>
+            </div>
+            <div class="mock-row">
+              <div class="mock-icon">📱</div>
+              <div class="mock-body">
+                <div class="mock-meat">Mere Christianity</div>
+                <div class="mock-sub">C. S. Lewis</div>
+                <div class="mock-top"><span class="mock-pill pill-finished">Finished</span><span class="mock-stars">★★★★☆</span></div>
+                <div class="mock-meta">Finished Aug 30 · 12 days</div>
+              </div>
+            </div>
+            <div class="mock-row">
+              <div class="mock-icon">📕</div>
+              <div class="mock-body">
+                <div class="mock-meat">The Old Man and the Sea</div>
+                <div class="mock-sub">Ernest Hemingway</div>
+                <div class="mock-top"><span class="mock-pill pill-shelf">On the Shelf</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust bar -->
+  <div class="trust-bar">
+    <div class="trust-item"><span class="trust-icon">☁️</span> Syncs across your Apple devices via iCloud</div>
+    <div class="trust-item"><span class="trust-icon">🔒</span> Your books stay in your own iCloud account</div>
+    <div class="trust-item"><span class="trust-icon">🚫</span> No ads. No subscriptions. No tracking.</div>
+    <div class="trust-item"><span class="trust-icon">🍎</span> Requires iOS 17 or later</div>
+  </div>
+
+  <!-- Features -->
+  <section class="features">
+    <p class="eyebrow">What's inside</p>
+    <h2 class="section-title">A reading log that's fine with a short history</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon icon-ember">📚</div>
+        <h3>Your whole library</h3>
+        <p>Books you're reading, have finished, or just own — paperback, hardback, ebook, or audiobook. Narrow it to Reading, Finished, or Shelf, and each list sorts itself the way you'd expect.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-flame">📌</div>
+        <h3>Want to Read</h3>
+        <p>Keep the books people tell you about on their own list, with who recommended each one. Swipe to start reading when you're ready.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-ember">📷</div>
+        <h3>Scan to add</h3>
+        <p>Point the camera at the barcode and BookIt fills in the title and author. No barcode? <strong>Scan Cover</strong> reads them off the front.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-flame">✅</div>
+        <h3>Start, finish, or set it aside</h3>
+        <p>One tap to <strong>Start Reading</strong>, <strong>Mark Finished</strong> and rate it, or say <strong>I've read enough</strong>. Don't remember the dates from years ago? Leave them blank.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-ember">🔁</div>
+        <h3>Re-reads</h3>
+        <p><strong>Read It Again</strong> keeps every read with its own dates and rating, and <strong>Log a Past Read</strong> backfills the one from years ago.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-flame">📄</div>
+        <h3>Bring your Kindle &amp; Audible library</h3>
+        <p>Import a whole reading list from a spreadsheet — only the title is required — and export it back out to edit on your Mac.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how">
+    <div>
+      <p class="eyebrow">How it works</p>
+      <h2 class="section-title">Add what you're reading, then keep going</h2>
+      <div class="how-steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Add the book you're reading</h4>
+            <p>Type it in or scan the barcode. Add a few you've finished, too — dates are optional.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Save the recommendations</h4>
+            <p>Put each book someone mentions on Want to Read, with their name, so you don't forget.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Finish, rate, and look back</h4>
+            <p>Mark it finished and give it stars. The Stats tab shows how many you've read this year and how fast.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="how-visual" aria-hidden="true"><img src="images/icon.png" alt=""></div>
+  </section>
+
+  <!-- iCloud band -->
+  <div class="icloud-band">
+    <div>
+      <h2>Your reading log, always with you</h2>
+      <p>BookIt syncs across your iPhone and iPad via iCloud. No account to create — just the Apple ID you already use. And a one-file backup is a tap away on the About tab.</p>
+    </div>
+    <a href="help.html" class="btn btn-primary">Read the Help</a>
+  </div>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© 2026 BookIt · Built by Bruce Barclay</span>
+    <ul class="footer-links">
+      <li><a href="help.html">Help</a></li>
+      <li><a href="privacy.html">Privacy Policy</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

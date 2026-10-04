@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help — BookIt</title>
+<meta name="description" content="How to use BookIt — the Library and Want to Read tabs, adding or scanning a book, Start / Finish / I've read enough, re-reads, ownership, archive, spreadsheet import, and backup.">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<style>
+.help-hero {
+  padding: 60px 0 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 56px;
+}
+.help-hero h1 { font-size: clamp(2rem, 4vw, 2.8rem); margin-top: .3em; }
+.help-hero p  { font-size: 1.05rem; color: var(--ink-muted); margin-top: .7em; }
+
+.help-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Sidebar */
+.help-sidebar {
+  position: sticky;
+  top: 80px;
+}
+.help-sidebar nav { display: flex; flex-direction: column; gap: 4px; }
+.help-sidebar a {
+  color: var(--ink-muted);
+  font-size: .92rem;
+  font-weight: 500;
+  padding: 7px 12px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  transition: background .12s, color .12s;
+}
+.help-sidebar a:hover,
+.help-sidebar a.active {
+  background: var(--ember-pale);
+  color: var(--ember);
+}
+.help-sidebar .section-group {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding: 16px 12px 4px;
+}
+
+/* Content */
+.help-section {
+  margin-bottom: 64px;
+  scroll-margin-top: 80px;
+}
+.help-section h2 {
+  font-size: 1.55rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 28px;
+}
+.help-section h2 .tab-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--ember-pale);
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.flame-bg { background: var(--flame-light) !important; }
+
+.help-section h3 {
+  font-size: 1.08rem;
+  margin: 24px 0 8px;
+  color: var(--ink);
+}
+.help-section p {
+  font-size: .96rem;
+  color: var(--ink-muted);
+  line-height: 1.65;
+  max-width: 62ch;
+}
+.help-section ul, .help-section ol {
+  margin: 8px 0 8px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.help-section li {
+  font-size: .95rem;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+/* Q&A */
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.faq-item summary {
+  padding: 15px 20px;
+  font-weight: 600;
+  font-size: .97rem;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  color: var(--ink);
+  user-select: none;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: '+'; font-size: 1.2rem; color: var(--ember); transition: transform .2s; }
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item[open] summary { border-bottom: 1px solid var(--border); }
+.faq-body {
+  padding: 16px 20px;
+  font-size: .93rem;
+  color: var(--ink-muted);
+  line-height: 1.65;
+  background: var(--ground);
+}
+.faq-body p + p { margin-top: .7em; }
+
+/* Tip box */
+.tip {
+  background: var(--ember-pale);
+  border-left: 3px solid var(--ember);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-size: .93rem;
+  color: var(--ink);
+}
+.tip strong { color: var(--ember); }
+
+/* Status pills */
+.actions-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 14px 0;
+}
+.action-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: .85rem;
+  font-weight: 600;
+  border: 1.5px solid;
+}
+/* Same colors as the app's status pills */
+.pill-purple { border-color: #9B59D0; color: #9B59D0; background: rgba(155,89,208,.10); }
+.pill-blue   { border-color: #2F7FE0; color: #2F7FE0; background: rgba(47,127,224,.10); }
+.pill-orange { border-color: #E07B1F; color: #E07B1F; background: rgba(224,123,31,.10); }
+.pill-green  { border-color: #2E9E4F; color: #2E9E4F; background: rgba(46,158,79,.10); }
+.pill-gray   { border-color: #8A8A90; color: #8A8A90; background: rgba(138,138,144,.10); }
+.arrow { color: var(--ink-muted); font-weight: 700; }
+
+/* Field table */
+.field-table {
+  width: 100%;
+  max-width: 640px;
+  border-collapse: collapse;
+  font-size: .9rem;
+  margin: 16px 0 18px;
+}
+.field-table th {
+  background: var(--ember-pale);
+  color: var(--ember);
+  font-weight: 700;
+  text-align: left;
+  padding: 9px 14px;
+  border-bottom: 2px solid var(--border);
+}
+.field-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink-muted);
+  vertical-align: top;
+}
+.field-table td:first-child { color: var(--ink); font-weight: 600; white-space: nowrap; }
+.field-table tr:last-child td { border-bottom: none; }
+
+@media (max-width: 700px) {
+  .help-layout { grid-template-columns: 1fr; }
+  .help-sidebar { display: none; }
+  .field-table td:first-child { white-space: normal; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav" aria-label="Site navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="images/icon.png" alt="" class="nav-logo-icon">
+      BookIt
+    </a>
+    <ul class="nav-links">
+      <li><a href="help.html" aria-current="page">Help</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="index.html#download" class="nav-cta">Download</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+<div class="page-content">
+
+  <div class="help-hero">
+    <p class="eyebrow">Documentation</p>
+    <h1>How to use BookIt</h1>
+    <p>The four tabs, adding a book (or scanning one), moving it from shelf to finished, re-reads, importing your Kindle and Audible library, and backing everything up.</p>
+  </div>
+
+  <div class="help-layout">
+
+    <!-- Sidebar -->
+    <aside class="help-sidebar">
+      <nav aria-label="Help sections">
+        <div class="section-group">Start Here</div>
+        <a href="#getting-started">🚀 Getting Started</a>
+        <a href="#statuses">🔖 The five statuses</a>
+        <div class="section-group">Tabs</div>
+        <a href="#library">📚 Library</a>
+        <a href="#want-to-read">📌 Want to Read</a>
+        <a href="#stats">📊 Stats</a>
+        <a href="#about">ℹ️ About</a>
+        <div class="section-group">Your books</div>
+        <a href="#adding">➕ Adding a book</a>
+        <a href="#scanning">📷 Scan a barcode or cover</a>
+        <a href="#book-page">📖 A book's page</a>
+        <a href="#dates">📅 Unknown dates</a>
+        <a href="#rereads">🔁 Re-reads</a>
+        <a href="#ownership">🏷 Ownership &amp; source</a>
+        <a href="#archive">🗄 Archive</a>
+        <div class="section-group">Your data</div>
+        <a href="#spreadsheet">📄 Spreadsheet import &amp; export</a>
+        <a href="#backup">💾 Backup &amp; Restore</a>
+        <a href="#faq">❓ FAQ</a>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <div class="help-content">
+
+      <!-- Getting Started -->
+      <section class="help-section" id="getting-started">
+        <h2><span class="tab-icon">🚀</span> Getting Started</h2>
+        <p>BookIt is a reading log. It keeps track of the books you've read, the one you're reading now, the audiobooks you've listened to, and the ones you want to get to — with dates, a star rating, and who recommended each one. It's built to look fine even if you're just starting out and only have a handful of books.</p>
+
+        <h3>Your first few minutes in the app</h3>
+        <ol>
+          <li>On the <strong>Library</strong> tab, tap <strong>+</strong> and add the book you're reading now. It starts as <em>Reading</em>, with today as the start date.</li>
+          <li>Add a few books you've already finished. Set the Status to <em>Finished</em> and give it a rating — if you don't remember the dates, just leave the date switches off.</li>
+          <li>On the <strong>Want to Read</strong> tab, tap <strong>+</strong> for each book someone's told you about, and put their name in <strong>Recommended by</strong>.</li>
+          <li>When you finish the current book, open it and tap <strong>Mark Finished</strong>, then tap the stars.</li>
+        </ol>
+        <div class="tip"><strong>Have a big Kindle or Audible library?</strong> You don't have to type it in. See <a href="#spreadsheet">Spreadsheet import</a>.</div>
+      </section>
+
+      <!-- Statuses -->
+      <section class="help-section" id="statuses">
+        <h2><span class="tab-icon flame-bg">🔖</span> The five statuses</h2>
+        <p>Every book has a status — where you are with <em>reading</em> it:</p>
+        <div class="actions-row">
+          <span class="action-pill pill-purple">On the Shelf</span>
+          <span class="action-pill pill-blue">Want to Read</span>
+          <span class="action-pill pill-orange">Reading</span>
+          <span class="action-pill pill-green">Finished</span>
+          <span class="action-pill pill-gray">Gave Up</span>
+        </div>
+        <ul>
+          <li><strong>On the Shelf</strong> — you have it, but no plans to read it right now. Most of a purchased library lands here.</li>
+          <li><strong>Want to Read</strong> — next up, or someone recommended it. These live on their own tab.</li>
+          <li><strong>Reading</strong> — in progress.</li>
+          <li><strong>Finished</strong> — done. You can rate it 1 to 5 stars.</li>
+          <li><strong>Gave Up</strong> — you read enough and set it aside. No guilt; it's just a note for later.</li>
+        </ul>
+        <p>The buttons on a book's page move it along — see <a href="#book-page">A book's page</a>.</p>
+      </section>
+
+      <!-- Library -->
+      <section class="help-section" id="library">
+        <h2><span class="tab-icon">📚</span> Library</h2>
+        <p>Every book except your Want to Read list. Each row shows the format (🎧 audiobook, ebook, paperback, hardback), the title and author, the status, the star rating, and when you started or finished it.</p>
+
+        <h3>All / Reading / Finished / Shelf</h3>
+        <p>The bar at the top narrows the list. Each choice sorts itself the way you'd expect — the line underneath shows how many books there are and how they're sorted:</p>
+        <table class="field-table">
+          <tr><th>Choice</th><th>Shows</th><th>Sorted by</th></tr>
+          <tr><td>All</td><td>Everything, including books you gave up on</td><td>Newest added first</td></tr>
+          <tr><td>Reading</td><td>Books in progress</td><td>Newest started first</td></tr>
+          <tr><td>Finished</td><td>Books you've finished</td><td>Newest finished first (undated ones at the bottom)</td></tr>
+          <tr><td>Shelf</td><td>On the Shelf books</td><td>Title, A to Z (ignoring "The", "A", "An")</td></tr>
+        </table>
+
+        <h3>Search</h3>
+        <p>Pull down to search by title, author, notes, or source.</p>
+
+        <h3>Format and archived books</h3>
+        <p>The filter button at the top left shows just one format — only audiobooks, say — and has a <strong>Show Archived</strong> switch. See <a href="#archive">Archive</a>.</p>
+
+        <h3>Little tags on a row</h3>
+        <ul>
+          <li><strong>↻ ×2</strong> — you've read it more than once. See <a href="#rereads">Re-reads</a>.</li>
+          <li><strong>Subscription / Borrowed / Sample</strong> — you don't own this copy. See <a href="#ownership">Ownership</a>.</li>
+        </ul>
+        <p>Swipe left on a row to delete a book.</p>
+      </section>
+
+      <!-- Want to Read -->
+      <section class="help-section" id="want-to-read">
+        <h2><span class="tab-icon">📌</span> Want to Read</h2>
+        <p>Your wishlist, newest first. Each row shows who recommended the book and the start of your notes. The number on the tab tells you how many are waiting.</p>
+        <ul>
+          <li><strong>Swipe right</strong> on a book and tap <strong>Start</strong> to begin reading it — it moves to the Library as Reading, with today as the start date.</li>
+          <li><strong>Swipe left</strong> to delete it.</li>
+          <li><strong>Search</strong> by title, author, or who recommended it — handy for "what was that book Dave told me about?"</li>
+        </ul>
+      </section>
+
+      <!-- Stats -->
+      <section class="help-section" id="stats">
+        <h2><span class="tab-icon flame-bg">📊</span> Stats</h2>
+        <p>A quick look at your reading — nothing to set up, no goals to hit. It's all worked out from your books:</p>
+        <ul>
+          <li><strong>Overview</strong> — total books, and how many are Reading, Finished, Set aside, Want to Read, On the Shelf, and Archived.</li>
+          <li><strong>This year</strong> — books finished this year, your average rating, and your typical time to read a book.</li>
+          <li><strong>Pace</strong> — your quickest and longest reads (needs at least two books with both dates).</li>
+          <li><strong>Finished by Year</strong> — how many you finished each year.</li>
+          <li><strong>By Format</strong> — how your books split between audiobook, ebook, paperback and hardback.</li>
+        </ul>
+      </section>
+
+      <!-- About -->
+      <section class="help-section" id="about">
+        <h2><span class="tab-icon">ℹ️</span> About</h2>
+        <h3>Backup &amp; Restore</h3>
+        <p>Export and import a backup of every book — see <a href="#backup">Backup &amp; Restore</a>.</p>
+        <h3>Spreadsheet</h3>
+        <p>Export your books to a spreadsheet, import a reading list, and the <strong>Column Guide</strong> — see <a href="#spreadsheet">Spreadsheet import &amp; export</a>.</p>
+        <h3>Your Data</h3>
+        <p>How many books you have, and how many you've finished.</p>
+        <h3>Delete All Books</h3>
+        <p>Permanently removes every book — from this device and, with iCloud on, your other devices too. Export a backup first.</p>
+        <h3>About</h3>
+        <p>The app's version and build number. Include the build number when you <a href="support.html">contact support</a>.</p>
+      </section>
+
+      <!-- Adding -->
+      <section class="help-section" id="adding">
+        <h2><span class="tab-icon">➕</span> Adding a book</h2>
+        <p>Tap <strong>+</strong> on the Library tab (the book starts as <em>Reading</em>) or the Want to Read tab (it starts as <em>Want to Read</em>). Only the title is required.</p>
+        <table class="field-table">
+          <tr><th>Field</th><th>What it's for</th></tr>
+          <tr><td>Title, Author</td><td>The title is the only thing you must fill in.</td></tr>
+          <tr><td>Format</td><td>Audiobook, Ebook, Paperback, or Hardback.</td></tr>
+          <tr><td>Status</td><td>See <a href="#statuses">the five statuses</a>.</td></tr>
+          <tr><td>Ownership</td><td>Own it, Subscription, Borrowed, or Sample — see <a href="#ownership">Ownership</a>.</td></tr>
+          <tr><td>Dates</td><td>Start and finish dates, each with an "I have a date" switch — see <a href="#dates">Unknown dates</a>.</td></tr>
+          <tr><td>Rating</td><td>1 to 5 stars. Appears once the status is Finished.</td></tr>
+          <tr><td>Recommended by</td><td>Who told you about it.</td></tr>
+          <tr><td>Source</td><td>Where your copy is from — Kindle, an Audible account, a library.</td></tr>
+          <tr><td>Why I set it aside</td><td>Appears when the status is Gave Up. Optional.</td></tr>
+          <tr><td>Notes</td><td>Anything you want to remember about it.</td></tr>
+        </table>
+        <p>To change a book later, open it and tap <strong>Edit</strong>. <strong>Cancel</strong> throws away your changes.</p>
+      </section>
+
+      <!-- Scanning -->
+      <section class="help-section" id="scanning">
+        <h2><span class="tab-icon flame-bg">📷</span> Scan a barcode or cover</h2>
+        <p>Holding a paper book? Let the camera fill in the title and author. When you're adding a new book on an iPhone or iPad, the top of the form has two buttons:</p>
+
+        <h3>Scan Barcode</h3>
+        <p>Point the camera at the barcode on the back cover (the one starting 978 or 979). BookIt looks the book up online and fills in the title and author. The format is set to Paperback — change it if it's a hardback.</p>
+
+        <h3>Scan Cover</h3>
+        <p>For a book with no barcode, or one the lookup can't find. Take a picture of the front cover; BookIt reads the text on it right on your phone and takes its best guess — the biggest words as the title, a name as the author.</p>
+        <p>If it guesses wrong, every line it read is listed under <strong>Text on the cover</strong>. Tap the right line for the title, then tap the right line for the author.</p>
+        <div class="tip"><strong>Scanning is optional.</strong> You can always just type the title in. The scan buttons don't appear when you're editing a book you already have.</div>
+      </section>
+
+      <!-- Book page -->
+      <section class="help-section" id="book-page">
+        <h2><span class="tab-icon">📖</span> A book's page</h2>
+        <p>Tap any book to see everything about it. Near the top are buttons for the next step, which change with the book's status:</p>
+        <table class="field-table">
+          <tr><th>When it's…</th><th>You can…</th></tr>
+          <tr><td>On the Shelf</td><td><strong>Move to Want to Read</strong>, or <strong>Start Reading</strong></td></tr>
+          <tr><td>Want to Read</td><td><strong>Start Reading</strong></td></tr>
+          <tr><td>Reading</td><td><strong>Mark Finished</strong>, or <strong>I've read enough</strong> (moves it to Gave Up)</td></tr>
+          <tr><td>Finished</td><td><strong>Read It Again</strong>, or <strong>Undo — Not Finished Yet</strong></td></tr>
+          <tr><td>Gave Up</td><td><strong>Move back to Reading</strong></td></tr>
+        </table>
+        <ul>
+          <li><strong>Start Reading</strong> fills in today as the start date, unless one is already set.</li>
+          <li><strong>Mark Finished</strong> fills in today as the finish date and shows the rating stars, so you can rate it right there.</li>
+          <li><strong>I've read enough</strong> asks to make sure, then moves the book to Gave Up and takes it off your Reading list. Tap Edit afterward if you want to note why.</li>
+          <li><strong>Undo — Not Finished Yet</strong> is for when you tapped Mark Finished by mistake.</li>
+        </ul>
+        <p>Below the buttons: the dates and how long it took you, ownership, rating, reading history, who recommended it, and your notes. At the bottom are <strong>Archive</strong> and <strong>Delete Book</strong>.</p>
+      </section>
+
+      <!-- Dates -->
+      <section class="help-section" id="dates">
+        <h2><span class="tab-icon flame-bg">📅</span> Unknown dates</h2>
+        <p>You won't remember when you read most older books, and that's fine. In the add/edit screen, the start and finish dates each have a switch — <strong>I have a start date</strong> and <strong>I have a finish date</strong>. Leave a switch off and BookIt stores no date, rather than a made-up one. The book shows "—" for that date.</p>
+        <p>When both dates are known, BookIt shows how long the book took you ("9 days", "3 weeks", "2 months"), and it counts toward your <a href="#stats">pace stats</a>.</p>
+      </section>
+
+      <!-- Re-reads -->
+      <section class="help-section" id="rereads">
+        <h2><span class="tab-icon">🔁</span> Re-reads</h2>
+        <p>Some books are worth reading more than once. BookIt keeps every read.</p>
+
+        <h3>Read It Again</h3>
+        <p>On a Finished book, tap <strong>Read It Again</strong>. Your last read — its dates and rating — is saved to the book's <strong>Reading History</strong>, and the book starts over as Reading with today as the start date.</p>
+
+        <h3>Log a Past Read</h3>
+        <p>Read it years ago before you started using BookIt? In the Reading History section, tap <strong>Log a Past Read</strong> and add it — dates and a rating if you have them, or just a note. Even "I read it once in college" is worth logging.</p>
+
+        <h3>Seeing your reads</h3>
+        <p>The Reading History section lists every read, with the current one marked. Its heading says "Read 3 Times" once there's more than one, and the book's row in the Library gets a <strong>↻ ×3</strong> tag. Swipe left on a past read to delete one you added by mistake.</p>
+      </section>
+
+      <!-- Ownership -->
+      <section class="help-section" id="ownership">
+        <h2><span class="tab-icon flame-bg">🏷</span> Ownership &amp; source</h2>
+        <p>Status is where you are with <em>reading</em> a book. Ownership is whether you still <em>have</em> it. They're separate — you can finish a library book, or own one you'll never read.</p>
+        <ul>
+          <li><strong>Own it</strong> — the default.</li>
+          <li><strong>Subscription</strong> — you read it through Kindle Unlimited, an Audible plan, or similar, and no longer have it.</li>
+          <li><strong>Borrowed</strong> — from a friend or the library.</li>
+          <li><strong>Sample</strong> — just the free sample.</li>
+        </ul>
+        <p>Change it right on the book's page with the <strong>I have this as</strong> picker. Anything other than Own it shows as a small tag on the Library row.</p>
+        <p><strong>Source</strong> is free text for where your copy came from — "Kindle", "Audible-main", a second Audible account, "christianaudio", the library. It's searchable from the Library tab.</p>
+      </section>
+
+      <!-- Archive -->
+      <section class="help-section" id="archive">
+        <h2><span class="tab-icon">🗄</span> Archive</h2>
+        <p>Archiving tucks a book out of the way without deleting it — a sample you'll never finish, a duplicate copy, a book you gave away. Tap <strong>Archive</strong> at the bottom of the book's page.</p>
+        <p>Archived books are hidden from the Library list. To see them, tap the filter button at the top left of the Library and turn on <strong>Show Archived</strong> — the list switches to only archived books and the title changes to "Archived". Open one and tap <strong>Unarchive</strong> to bring it back.</p>
+      </section>
+
+      <!-- Spreadsheet -->
+      <section class="help-section" id="spreadsheet">
+        <h2><span class="tab-icon flame-bg">📄</span> Spreadsheet import &amp; export</h2>
+        <p>Typing in hundreds of books one by one is no fun. If you have a list — from Amazon's "Request My Data" for Kindle and Audible, or one you've kept yourself — save it as a CSV file and import it all at once.</p>
+
+        <h3>Import Reading List</h3>
+        <p>Go to <strong>About → Import Reading List (CSV)</strong> and pick the file. The first row must be the column names. Only a <strong>Title</strong> column is required; everything else is optional:</p>
+        <table class="field-table">
+          <tr><th>Column</th><th>What goes in it</th></tr>
+          <tr><td>Title</td><td>Required.</td></tr>
+          <tr><td>Author</td><td>Free text.</td></tr>
+          <tr><td>Format</td><td>Audiobook, Ebook, Paperback, Hardback. "Kindle" and "Audible" work too. Blank → Ebook.</td></tr>
+          <tr><td>Status</td><td>On the Shelf, Want to Read, Reading, Finished, Gave Up. "Read", "DNF" and "Unread" work too. Blank → On the Shelf.</td></tr>
+          <tr><td>Ownership</td><td>Own it, Subscription, Borrowed, Sample. "KU" and "Audible" work too. Blank → Own it.</td></tr>
+          <tr><td>Archived</td><td>"yes" to hide it from the Library list.</td></tr>
+          <tr><td>Start, Finish</td><td>A full date (4/2/2026 or 2026-04-02), a month and year ("July 2019"), or just a year ("2019").</td></tr>
+          <tr><td>Rating</td><td>0 to 5.</td></tr>
+          <tr><td>RecommendedBy</td><td>Who told you about it.</td></tr>
+          <tr><td>Source</td><td>Where it's from.</td></tr>
+          <tr><td>GaveUpNote</td><td>Why you set it aside.</td></tr>
+          <tr><td>Notes</td><td>Anything else.</td></tr>
+        </table>
+        <p>Column names don't care about capital letters or spaces. The same list is in the app — tap <strong>About → Column Guide</strong>.</p>
+        <p>When the import finishes, it tells you how many books it added, how many it skipped because you already have them, and how many dates it couldn't read (those are left blank).</p>
+        <div class="tip"><strong>Safe to repeat.</strong> A row whose title (and author) is already in your library is skipped, so importing the same file twice never makes duplicates.</div>
+
+        <h3>Export Reading List</h3>
+        <p><strong>About → Export Reading List (CSV)</strong> saves every book to a spreadsheet you can open in Numbers or Excel, using the same columns the import reads. The file is named like <code>2026-10-04_1830_BookIt_Books.csv</code>.</p>
+
+        <h3>Editing your books on a Mac</h3>
+        <p>To fix a lot of books at once: export, make your changes in Numbers or Excel, then <strong>Delete All Books</strong> and import the edited file. (You have to delete first — otherwise the import skips every book because it's already there.) Export a <a href="#backup">backup</a> before you start, just in case.</p>
+        <div class="tip"><strong>Re-reads don't go in the spreadsheet.</strong> It has one row per book — only the current read. If you've used Read It Again or Log a Past Read, the JSON <a href="#backup">backup</a> is the only file that keeps that history.</div>
+      </section>
+
+      <!-- Backup -->
+      <section class="help-section" id="backup">
+        <h2><span class="tab-icon">💾</span> Backup &amp; Restore</h2>
+        <p>With iCloud on, your books are already synced and safe in your iCloud account. A backup file is an extra copy you control.</p>
+
+        <h3>Export Backup</h3>
+        <p><strong>About → Export Backup</strong> saves one file with every book — including all your re-reads — named like <code>2026-10-04_1830_BookIt_Backup.json</code>. Save it to Files, Dropbox, or email it to yourself.</p>
+
+        <h3>Import Backup</h3>
+        <p><strong>About → Import Backup</strong> and pick a backup file. Import <strong>merges</strong> with what you already have: books already in the app are updated from the file, missing ones are added, and nothing is ever deleted. Importing the same file twice is safe. Backups from older versions of BookIt still restore.</p>
+        <div class="tip"><strong>A good habit:</strong> export a backup every month or two, and always before Delete All Books.</div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="help-section" id="faq">
+        <h2><span class="tab-icon">❓</span> FAQ</h2>
+
+        <details class="faq-item">
+          <summary>Where did my Want to Read books go in the Library?</summary>
+          <div class="faq-body">
+            <p>They're on their own tab, <strong>Want to Read</strong>, so the Library stays about books you have or have read. Once you start one, it moves to the Library.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>I can't find a book I gave up on.</summary>
+          <div class="faq-body">
+            <p>Gave Up books only show under <strong>All</strong> in the Library — not Reading, Finished, or Shelf. Or just search for it.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>A book disappeared from my Library.</summary>
+          <div class="faq-body">
+            <p>It's probably archived. Tap the filter button at the top left, turn on <strong>Show Archived</strong>, and look there. Also check the Format filter isn't set to a single format.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Why can't I rate a book I'm reading?</summary>
+          <div class="faq-body">
+            <p>The stars appear once a book is Finished. Tap <strong>Mark Finished</strong> and they show up right on the book's page.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>I don't see Scan Barcode or Scan Cover.</summary>
+          <div class="faq-body">
+            <p>They only appear when you're adding a <em>new</em> book, on an iPhone or iPad with a camera. If BookIt asked to use the camera and you said no, turn it back on in <strong>Settings → BookIt → Camera</strong> on your iPhone.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>The barcode scan said "No match".</summary>
+          <div class="faq-body">
+            <p>Not every book is in the online book databases — older and smaller-press books especially. Try <strong>Scan Cover</strong>, or type the title in.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>My spreadsheet import skipped books I changed.</summary>
+          <div class="faq-body">
+            <p>The import skips any title you already have, so it can't make duplicates — but that also means it won't update them. To apply edits, export a backup, then <strong>About → Delete All Books</strong>, then import your edited spreadsheet.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Some of my dates didn't come in.</summary>
+          <div class="faq-body">
+            <p>BookIt only fills in a date it's sure of. Something vaguer than a year ("a while ago", "2010s") is left blank, and the import tells you how many it skipped. Fix those in the spreadsheet, or open the books and add the dates.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Does BookIt work without iCloud?</summary>
+          <div class="faq-body">
+            <p>Yes. Everything is stored on your device whether or not iCloud is on — you just won't get sync to your other devices. If you're not using iCloud, export a backup now and then so you have a copy.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Can I use it on my iPad?</summary>
+          <div class="faq-body">
+            <p>Yes. BookIt runs on iPhone and iPad, and iCloud keeps your books in sync between them.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How do I report a bug or ask for a feature?</summary>
+          <div class="faq-body">
+            <p>Head to the <a href="support.html">Support page</a> and send an email. Include your build number (About tab) and what you expected versus what happened.</p>
+          </div>
+        </details>
+
+      </section>
+
+    </div><!-- /help-content -->
+  </div><!-- /help-layout -->
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© 2026 BookIt · Built by Bruce Barclay</span>
+    <ul class="footer-links">
+      <li><a href="help.html">Help</a></li>
+      <li><a href="privacy.html">Privacy Policy</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
