@@ -19,11 +19,11 @@ RememberIt sites — plain HTML + one shared `style.css`, no build step, no Java
 - `images/` — `icon.png` (256), `favicon.png` (64), `apple-touch-icon.png` (180), all
   resized from `../bookit/BookIt/Assets.xcassets/AppIcon.appiconset/bookit.png`
 
-## At release (TODO)
-- `index.html` `#download`: swap the "Coming soon" badge for the real App Store button
-  (commented template is right there), and change the hero tag to "Available now on the App Store".
+## Released
+- App Store link (live 2026-11-14): https://apps.apple.com/us/app/bookit-reading-log/id6808320162 — wired into `index.html` `#download`.
 
 ## Keep accurate
+- **iPhone only** (app build 14+). Don't mention iPad anywhere on the site.
 - **Privacy page must match the app.** BookIt's only network call is **Scan Barcode**:
   the ISBN goes to Open Library, then Google Books as a fallback (no key, nothing else sent).
   **Scan Cover** is on-device Vision OCR — nothing leaves the phone, the image isn't saved.
